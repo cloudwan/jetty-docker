@@ -13,11 +13,11 @@ ENV		JETTY_HOME="${JETTY_HOME}" \
 		JETTY_PORTS="8080 8443"
 WORKDIR		/
 USER		root
+COPY		["files/", "/"]
 RUN		set -eu; \
 		apt-get update -y; \
 		apt-get install -y authbind; \
 		install -d -o 0 -g 0 -m 0755 "${JETTY_HOME}"; \
 		wget --no-verbose -O- "${JETTY_DIST_URL}" | \
 		tar -x -z -f- --strip-components=1 -C "${JETTY_HOME}" --no-same-owner
-COPY		["files/", "/"]
 ENTRYPOINT	["/jetty_run.sh"]
