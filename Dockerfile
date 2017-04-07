@@ -19,5 +19,8 @@ RUN		set -eu; \
 		apt-get install -y authbind; \
 		install -d -o 0 -g 0 -m 0755 "${JETTY_HOME}"; \
 		wget --no-verbose -O- "${JETTY_DIST_URL}" | \
-		tar -x -z -f- --strip-components=1 -C "${JETTY_HOME}" --no-same-owner
+		tar -x -z -f- --strip-components=1 -C "${JETTY_HOME}" --no-same-owner; \
+# Fix X-Proxied-Https handling
+		sed -i 's@<Set name="forwardedForHeader"><Property name="jetty\.httpConfig\.forwardedHttpsHeader" default="X-Proxied-Https"/></Set>@<Set name="forwardedHttpsHeader"><Property name="jetty\.httpConfig\.forwardedHttpsHeader" default="X-Proxied-Https"/></Set>@g' \
+			"${JETTY_HOME}/etc/jetty-http-forwarded.xml"
 ENTRYPOINT	["/jetty_run.sh"]
