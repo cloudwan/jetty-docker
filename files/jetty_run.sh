@@ -42,5 +42,5 @@ chown -RHh "${JETTY_USER}" "${JETTY_LOGS}"
 exec su --shell /bin/sh "${JETTY_USER}" -c '
 	set -eu
 	cd "${JETTY_BASE}"
-	exec authbind /usr/bin/java -jar "${JETTY_HOME}/start.jar" "$@"
+	exec authbind --deep /usr/bin/java -jar "${JETTY_HOME}/start.jar" "$@"
 ' jetty.logs="${JETTY_LOGS}" "$@"
